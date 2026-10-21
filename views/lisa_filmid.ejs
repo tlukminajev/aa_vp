@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Juri Rahhimov, veebiprogrammeerimine</title>
+</head>
+<body>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Eesti filmid</h1>
+	<p>Siin saab lisada Eesti filme.</p>
+	 	<li><a href="/">Avalehele</a></li>
+		<li><a href="/eestifilm">Eesti filmi avalehele</a></li>
+		<li><a href="/eestifilm/lisa_film_inimesed">Lisa filmiinimene</a></li>
+		<li><a href="/eestifilm/lisa_person_in_movie">Lisa seos (inimene filmis)</a></li>
+	
+	<h2>Lisa film</h2>
+	<form method="POST">
+		<label for="titleInput">Filmi pealkiri</label>
+		<input id="titleInput" name="titleInput" type="text" placeholder="pealkiri" value="<%= titleInput || '' %>">
+		<br>
+		<label for="releaseYearInput">Esilinastusaasta</label>
+		<input id="releaseYearInput" name="releaseYearInput" type="number" placeholder="aasta" value="<%= releaseYearInput || '' %>">
+		<br>
+		<label for="durationInput">Kestus (minutites)</label>
+		<input id="durationInput" name="durationInput" type="number" placeholder="minutid" value="<%= durationInput || '' %>">
+		<br>
+		<label for="descriptionInput">Kirjeldus</label>
+		<textarea id="descriptionInput" name="descriptionInput" placeholder="kirjeldus" rows="4" cols="40"><%= descriptionInput || '' %></textarea>
+		<br>
+		<input id="movieSubmit" name="movieSubmit" type="submit" value="Salvesta">
+	</form>
+	<p><%= notice %></p>
+	
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Juri Rahhimov, veebiprogrammeerimine</title>
+</head>
+<body>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Eesti filmid</h1>
+	<p>Siin saab lisada seoseid inimeste ja filmide vahel.</p>
+	 	<li><a href="/">Avalehele</a></li>
+		<li><a href="/eestifilm">Eesti filmi avalehele</a></li>
+		<li><a href="/eestifilm/lisa_film_inimesed">Lisa filmiinimene</a></li>
+		<li><a href="/eestifilm/lisa_filmid">Lisa film</a></li>
+	
+	<h2>Lisa seos (inimene filmis)</h2>
+	<form method="POST">
+		<label for="characterNameInput">Tegelase nimi</label>
+		<input id="characterNameInput" name="characterNameInput" type="text" placeholder="tegelase nimi (valikuline)" value="<%= characterNameInput || '' %>">
+		<br>
+		<label for="personIdInput">Filmiinimene</label>
+		<select id="personIdInput" name="personIdInput">
+			<option value="">-- vali inimene --</option>
+			<% if (typeof personList !== 'undefined') { personList.forEach(function(person) { %>
+				<option value="<%= person.id %>" <%= String(personIdInput) === String(person.id) ? 'selected' : '' %>>
+					<%= person.first_name %> <%= person.last_name %>
+				</option>
+			<% }) } %>
+		</select>
+		<br>
+		<label for="movieIdInput">Film</label>
+		<select id="movieIdInput" name="movieIdInput">
+			<option value="">-- vali film --</option>
+			<% if (typeof movieList !== 'undefined') { movieList.forEach(function(movie) { %>
+				<option value="<%= movie.id %>" <%= String(movieIdInput) === String(movie.id) ? 'selected' : '' %>>
+					<%= movie.title %> (<%= movie.release_year %>)
+				</option>
+			<% }) } %>
+		</select>
+		<br>
+		<label for="professionIdInput">Amet / roll</label>
+		<select id="professionIdInput" name="professionIdInput">
+			<option value="">-- vali amet --</option>
+			<% if (typeof professionList !== 'undefined') { professionList.forEach(function(profession) { %>
+				<option value="<%= profession.id %>" <%= String(professionIdInput) === String(profession.id) ? 'selected' : '' %>>
+					<%= profession.title %>
+				</option>
+			<% }) } %>
+		</select>
+		<br>
+		<input id="relationSubmit" name="relationSubmit" type="submit" value="Salvesta">
+	</form>
+	<p><%= notice %></p>
+	
+</body>
+</html>

@@ -2,22 +2,20 @@
 <html lang="et">
 <head>
 	<meta charset="utf-8">
-	<title>Kirill Minajev, veebiprogrammeerimine</title>
+	<title>Juri Rahhimov, veebiprogrammeerimine</title>
 </head>
 <body>
-	<img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
-	<h1>Eesti film</h1>
-	<p>Siit leiab infot Eesti filmidega seotud inimeste kohta.</p>
-	<ul>
-		<li><a href="/">Avalehele</a></li>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Eesti filmid</h1>
+	<p>Siit leiab infot Eesti filmidega seoutud inimeste kohta.</p>
+	 	<li><a href="/">Avalehele</a></li>
 		<li><a href="/eestifilm">Eesti filmi avalehele</a></li>
-	</ul>
-	<hr>
-	<h2>Siit andmebaasist leitavad inimesed</h2>
+	<h2>Siit andmebaasist leitavad filmiinimesed</h2>
 	<ol>
 		<% personList.forEach(function(person) { %>
-		<li><%= person.first_name %> <%= person.last_name %>, sündinud <%= person.born %>.</li>
+		<li><%=person.first_name%> <%= person.last_name %>, sündinud <%= person.born%>.</li>
 		<% }); %>
 	</ol>
+	
 </body>
 </html>

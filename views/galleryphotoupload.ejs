@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<title>Kirill Minajev, veebiprogrammeerimine</title>
+</head>
+<body>
+    <img src="../pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+	<h1>Eesti filmid</h1>
+	<p>Siin saab lisada fotosid laadida.</p>
+	 	<li><a href="/">Avalehele</a></li>
+		<li><a href="/eestifilm">Eesti filmi avalehele</a></li>
+		<li><a href="/eestifilm/lisa_filmid">Lisa film</a></li>
+		<li><a href="/eestifilm/lisa_person_in_movie">Lisa seos (inimene filmis)</a></li>
+	
+	<h2>Lae foto üles</h2>
+	<form method="POST" enctype="multipart/form-data">
+		<label for="photoInput">Vali pildi fail (.jpg)</label>
+		<input id="photoInput" name="photoInput" type="file">
+		<br>
+		<label for="altInput">Sisesta alternatiivtekst (alt)</label>
+		<input id="altInput" name="altInput" type="text" placeholder="Sellel fotol on ...">
+		<br>
+		<input id="privacyInput1" name="privacyInput" type="radio" value="1" checked>
+		<label for="privacyInput1">Privaatne (Ainult ise näed)</label>
+		<br>
+		<input id="privacyInput2" name="privacyInput" type="radio" value="2" checked>
+		<label for="privacyInput2">Sisseloginud kasutajatele</label>
+		<br>
+		<input id="privacyInput3" name="privacyInput" type="radio" value="3" checked>
+		<label for="privacyInput3">Avalik (Kõik näevad)</label>
+		<br>
+		<input id="photoSubmit" name="photoSubmit" type="submit" value="Lae üles">
+	</form>
+
+</body>
+</html>

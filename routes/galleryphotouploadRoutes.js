@@ -1,0 +1,21 @@
+const express = require('express')
+const multer = require('multer')
+
+const router = express.Router()
+
+//seadistame multer vahevara faile üles laadima kindlasse kataloogi
+const upload = multer({dest: './public/gallery/orig/'})
+
+//saab määrata ka lubatud failitüüpe, failimahtu jms
+
+//kasutatavad kontrollerid
+const {
+    galleryPhotoUpload,
+    galleryPhotoUploadPost
+} = require('../controllers/galleryphotouploadControllers')
+
+router.route('/').get(galleryPhotoUpload)
+
+router.route('/').post(upload.single('photoInput'), galleryPhotoUploadPost)
+
+module.exports = router;
