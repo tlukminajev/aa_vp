@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 const fs = require('fs').promises;
 const sharp = require('sharp');
+const path = require('path');
 
 //@desc home page for uploading photos to gallery
 //@route GET /galleryphotoupload
@@ -9,17 +10,31 @@ const galleryPhotoUpload = (req,res) => {
     res.render('galleryphotoupload')
 }
 
+
+
 const galleryPhotoUploadPost = async (req,res) => {
     //console.log(req.body)
     //console.log(req.file)
     let conn
+
+    const originalPath = process.env.UPLOAD_ORIGINAL_PATH
+    const resizedPath = process.env.UPLOAD_RESIZED_PATH
+    const thumbnailPath = process.env.UPLOAD_THUMBNAIL_PATH
+
+    const watermarkPath = './public/pic/vp_logo_small.png'
+
     try {
         //genereerime oma failinime
         const fileName = 'vp_' + Date.now() + '.jpg'
-        await fs.rename(req.file.path, req.file.destination + fileName)
-        //teeme väiksema veebisõbraliku pildi
-        await sharp(req.file.destination + fileName).resize(800, 500).jpeg({quality: 90}).toFile('./public/gallery/normal/' + fileName)
-        await sharp(req.file.destination + fileName).resize(100, 100).jpeg({quality: 90}).toFile('./public/gallery/thumbs/' + fileName)
+
+        const inputFile = path.join(originalPath, fileName)
+
+        await fs.rename(req.file.path, inputFile)
+
+        await sharp(inputFile).resize(800, 500).composite([{input: watermarkPath,gravity: 'southeast'}]).jpeg({quality: 90}).toFile(path.join(resizedPath, fileName))
+
+        await sharp(inputFile).resize(100, 100).jpeg({quality: 90}).toFile(path.join(thumbnailPath, fileName))
+
         conn = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,

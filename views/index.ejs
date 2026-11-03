@@ -18,6 +18,19 @@
 		<li><a href="/visits"> Viimased visiidid</a></li>
 		<li><a href="/eestifilm"> Eesti filmid</a></li>
 		<li><a href="/galleryphotoupload"> Fotode üleslaadimine</a></li>
+		<li><a href="/gallery">Fotogalerii</a></li>
 	</ul>
+	<h2>Kõige uuem avalik foto</h2>
+
+	<% if (latestPhoto) { %>
+    	<img
+        src="/gallery/normal/<%= latestPhoto.filename %>"
+        alt="<%= latestPhoto.alttext || 'Kõige uuem foto' %>"
+        width="500"
+    	>
+    	<p><%= latestPhoto.alttext || 'Kõige uuem foto' %></p>
+	<% } else { %>
+    	<p>Avalikke fotosid ei leitud.</p>
+	<% } %>
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <title>Fotogalerii</title>
+</head>
+<body>
+
+    <img src="/pic/veebiprogrammeerimine_2026_AA.png" alt="banner">
+
+    <h1>Fotogalerii</h1>
+
+    <p><a href="/">Avalehele</a></p>
+    <p><a href="/galleryphotoupload">Lae foto üles</a></p>
+
+    <% if (photos.length > 0) { %>
+
+        <% photos.forEach(function(photo) { %>
+
+            <div>
+                <img
+                    src="/gallery/normal/<%= photo.filename %>"
+                    alt="<%= photo.alttext || 'Foto' %>"
+                    width="300"
+                >
+
+                <p><%= photo.alttext || 'Foto' %></p>
+            </div>
+
+        <% }) %>
+
+    <% } else { %>
+
+        <p>Fotosid ei leitud.</p>
+
+    <% } %>
+
+</body>
+</html>

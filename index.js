@@ -1,6 +1,7 @@
 const express = require('express')
+const mysql = require('mysql2/promise')
 const dateTimeET = require('./public/src/dateTimeET.js');
-const bodyparser = require('body-parser')
+const bodyparser = require('body-parser');
 require('dotenv').config() // moodul keskkonna muutujate lugemiseks
 //käivitan express() funktsiooni ja tähistan töötava asja nimega "app"
 const app = express()
@@ -9,16 +10,45 @@ const app = express()
 app.set('view engine', 'ejs')
 
 //muudan "public" veebiserverile kättesaadavaks
-app.use(express.static('public'))
+app.use(express.static('public'));
 //hakkame päringuid parsima. kui on ainult tekst "false"
-app.use(bodyparser.urlencoded({extended: true}))
+app.use(bodyparser.urlencoded({extended: true}));
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     //res.send('Express.js veeb käivitus!')
     const day = dateTimeET.weekDayET()
     const date = dateTimeET.dateET()
     const time = dateTimeET.timeET()
-    res.render('index', {day: day, date: date, time: time})
+
+    let conn
+    let latestPhoto = null
+
+    try {
+        conn = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_DATABASE
+        })
+
+        const sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE id = (SELECT MAX(id) FROM galleryphotos WHERE privacy = ? AND deleted IS NULL)'
+
+        const [sqlRes] = await conn.execute(sqlReq, [3])
+
+        if (sqlRes.length > 0) {
+            latestPhoto = sqlRes[0]
+        }
+    }
+    catch (err) {
+        console.log('Andmebaasiga suhtlemise viga: ' + err)
+    }
+    finally {
+        if (conn) {
+            await conn.end()
+        }
+    }
+
+    res.render('index', {day: day, date: date, time: time, latestPhoto: latestPhoto})
 })
 
 /*app.get('/regvisit', (req, res)=>{
@@ -78,12 +108,14 @@ const visitsRouter = require('./routes/visitsRoutes')
 const vanasonaRouter = require('./routes/vanasonaRoutes')
 const minuluguRouter = require('./routes/minuluguRoutes')
 const galleryphotouploadRouter = require('./routes/galleryphotouploadRoutes')
+const galleryRouter = require('./routes/galleryRoutes')
 app.use('/visits', visitsRouter)
 app.use('/minulugu',minuluguRouter)
 app.use('/regvisit', regvisitRouter)
 app.use('/eestifilm', eestifilmRouter)
 app.use('/vanasona', vanasonaRouter)
 app.use('/galleryphotoupload', galleryphotouploadRouter)
+app.use('/gallery', galleryRouter)
 /*app.get('/eestifilm', (req, res) => {
     res.render('eestifilm')
 })*/
