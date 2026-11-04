@@ -51,6 +51,14 @@ app.get('/', async (req, res) => {
     res.render('index', {day: day, date: date, time: time, latestPhoto: latestPhoto})
 })
 
+app.get('/home', (req,res) => {
+    res.render('home');
+})
+
+app.get('/logout', (req,res) => {
+    res.redirect('/');
+})
+
 /*app.get('/regvisit', (req, res)=>{
     res.render('regvisit')
 })
@@ -109,6 +117,8 @@ const vanasonaRouter = require('./routes/vanasonaRoutes')
 const minuluguRouter = require('./routes/minuluguRoutes')
 const galleryphotouploadRouter = require('./routes/galleryphotouploadRoutes')
 const galleryRouter = require('./routes/galleryRoutes')
+const signupRouter = require('./routes/signupRoutes')
+const signinRouter = require('./routes/signinRoutes')
 app.use('/visits', visitsRouter)
 app.use('/minulugu',minuluguRouter)
 app.use('/regvisit', regvisitRouter)
@@ -116,6 +126,8 @@ app.use('/eestifilm', eestifilmRouter)
 app.use('/vanasona', vanasonaRouter)
 app.use('/galleryphotoupload', galleryphotouploadRouter)
 app.use('/gallery', galleryRouter)
+app.use('/signup', signupRouter)
+app.use('/signin', signinRouter)
 /*app.get('/eestifilm', (req, res) => {
     res.render('eestifilm')
 })*/
