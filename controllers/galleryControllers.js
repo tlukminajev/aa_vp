@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise')
 
 //@desc Show gallery photos
 //@route GET /gallery
-//@access public
+//@access private
 
 const gallery = async (req, res) => {
     let conn
@@ -15,7 +15,7 @@ const gallery = async (req, res) => {
             database: process.env.DB_DATABASE
         })
 
-        const sqlReq = 'SELECT filename, alttext FROM galleryphotos WHERE privacy >= ? AND deleted IS NULL ORDER BY id DESC'
+        const sqlReq = 'SELECT id, filename, alttext FROM galleryphotos WHERE privacy >= ? AND deleted IS NULL ORDER BY id DESC'
 
         const [sqlRes] = await conn.execute(sqlReq, [2])
 

@@ -41,6 +41,8 @@ const signinPagePost = async (req,res) => {
         const match = await argon.verify(users[0].password, req.body.passwordInput);
         if(match) {
             console.log('Oled sisseloginud kasutaja ' + users[0].id);
+            //käivitame sessiooni, salvestame sessioonimuutujad
+            req.session.userId = users[0].id;
             return res.redirect('/home');
         } else {
             let notice = 'Kasutajatunnus ja/või salasõna on vale';

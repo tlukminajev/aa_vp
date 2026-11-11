@@ -1,10 +1,33 @@
 const express = require('express')
 const mysql = require('mysql2/promise')
+//Sessiooni moodul
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const dateTimeET = require('./public/src/dateTimeET.js');
+//sisselogimise kontroll
+const checkLogin = require('./public/src/checkLogin');
 const bodyparser = require('body-parser');
 require('dotenv').config() // moodul keskkonna muutujate lugemiseks
 //käivitan express() funktsiooni ja tähistan töötava asja nimega "app"
-const app = express()
+const app = express();
+//määrame sessioonihalduse
+//esimene variant kasutas default memorystory'i ja säiltias vaid ühe sessiooni korraga
+//app.use(session({secret: process.env.SES_SECRET, saveUninitialized: false, resave: true}));
+const sessionStore = new MySQLStore({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_DATABASE
+        });
+app.use(session({
+    secret: process.env.SES_SECRET,
+    store: sessionStore,
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 1 //sessioon aegub tunniga
+    }
+}));
 
 //määrame veebilehe mallide järgi renderdamise mootori (ejs)
 app.set('view engine', 'ejs')
@@ -51,11 +74,13 @@ app.get('/', async (req, res) => {
     res.render('index', {day: day, date: date, time: time, latestPhoto: latestPhoto})
 })
 
-app.get('/home', (req,res) => {
+app.get('/home', checkLogin.isLogin, (req,res) => {
     res.render('home');
 })
 
 app.get('/logout', (req,res) => {
+    //hävitame sessiooni
+    req.session.destroy();
     res.redirect('/');
 })
 
